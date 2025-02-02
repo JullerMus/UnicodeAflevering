@@ -46,7 +46,7 @@ public class UnicodeRestController {
             unicodeSet.add(new Unicode(i, (char)i, "unicode: " + String.valueOf(i)));
             i++;
         }
-
+        //List<Unicode> unicodesSorted = unicodeSet.stream().sorted(Comparator.comparing(Unicode::getUnicode)).collect(Collectors.toList());
         unicodeRepository.saveAll(unicodeSet);
         return ResponseEntity.ok("");
     }
