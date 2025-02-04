@@ -3,6 +3,7 @@ package org.example.unicodeaflevering.Controller;
 import org.antlr.v4.runtime.tree.Tree;
 import org.example.unicodeaflevering.Model.Unicode;
 import org.example.unicodeaflevering.Repository.UnicodeRepository;
+import org.example.unicodeaflevering.Service.UnicodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class UnicodeRestController {
     @Autowired
     private UnicodeRepository unicodeRepository;
 
+    @Autowired
+    private UnicodeService unicodeService;
+
     @GetMapping("/unicode/{i}")
     public String unicodeToChar(@PathVariable int i) {
-        char c = (char)i;
-        return "unicode=" + i + " char=" + c;
+        return "unicode=" + i + " char=" + (char)i;
     }
 
     /**
@@ -30,7 +34,7 @@ public class UnicodeRestController {
      */
     @GetMapping("/char/{i}")
     public String charToUnicode(@PathVariable char i) {
-        return "char=" + i + " unicode=" + (int) i;
+        return "char=" + i + " unicode=" + (int)i;
     }
 
     /**
@@ -40,21 +44,15 @@ public class UnicodeRestController {
      */
     @GetMapping("unicode/initdata")
     public ResponseEntity<String> initdata() {
-        Set<Unicode> unicodeSet = new LinkedHashSet<>();
-        int i = 1;
-        while(i <= 150 ){
-            unicodeSet.add(new Unicode(i, (char)i, "unicode: " + String.valueOf(i)));
-            i++;
-        }
-
-        unicodeRepository.saveAll(unicodeSet);
-        return ResponseEntity.ok("");
+        return unicodeService.initData();
     }
 
+    /**
+     * Retrieves a Set of Unicodes from the MySQL database
+     * @return a Set of Unicodes
+     */
     @GetMapping("unicode/unicodeset")
     public Set<Unicode> unicodeSet() {
-        Set<Unicode> unicodeSet = new LinkedHashSet<>();
-        unicodeSet.addAll(unicodeRepository.findAll());
-        return unicodeSet;
+       return unicodeService.unicodeSet();
     }
 }
