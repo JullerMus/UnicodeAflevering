@@ -31,13 +31,18 @@ public class UnicodeService {
         //List<Unicode> unicodesSorted = unicodeSet.stream().sorted(Comparator.comparing(Unicode::getUnicode)).toList();
 
         unicodeRepository.saveAll(unicodeSet);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Initialized Unicode set");
     }
 
     public Set<Unicode> unicodeSet(){
         Set<Unicode> unicodeSet = new LinkedHashSet<>();
         unicodeSet.addAll(unicodeRepository.findAll());
         return unicodeSet;
+    }
+
+    public ResponseEntity<String> deleteUnicodeSet(){
+        unicodeRepository.deleteAll();
+        return ResponseEntity.ok("Deleted Unicode set");
     }
 
 }

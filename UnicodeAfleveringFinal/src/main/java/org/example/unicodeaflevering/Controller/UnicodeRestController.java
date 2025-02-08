@@ -37,7 +37,7 @@ public class UnicodeRestController {
         return "char=" + i + " unicode=" + (int)i;
     }
 
-    /**
+    /** 
      * Initialises all Unicode characters, in the interval 1 - 150.
      * Using LinkedHashSet to maintain correct order, instead of sorting
      * @return ResponseEntity
@@ -54,5 +54,15 @@ public class UnicodeRestController {
     @GetMapping("unicode/unicodeset")
     public Set<Unicode> unicodeSet() {
        return unicodeService.unicodeSet();
+    }
+
+    /**
+     * Deletes all entries in the 'unicodes' table
+     * in the database
+     * @return A ResponseEntity
+     */
+    @GetMapping("/unicode/deleteunicodes")
+    public ResponseEntity<String> deleteunicodes() {
+        return unicodeService.deleteUnicodeSet();
     }
 }
